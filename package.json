@@ -1,0 +1,56 @@
+{
+  "name": "film",
+  "version": "2.0.5",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "build": "rimraf dist && babel src --out-dir dist/js",
+    "dev": "node --version && cross-env PORT=8095 DEBUG=api:* nodemon src/index.js --exec babel-node"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "4.1.1",
+    "express-blueforest": "1.1.11",
+    "express-validator": "5.3.1",
+    "jsonwebtoken": "8.5.1",
+    "mongo-registry": "1.0.21"
+  },
+  "devDependencies": {
+    "babel-cli": "6.26.0",
+    "babel-core": "6.26.0",
+    "babel-plugin-transform-builtin-extend": "1.1.2",
+    "babel-plugin-transform-runtime": "6.23.0",
+    "babel-polyfill": "6.26.0",
+    "babel-preset-env": "1.6.1",
+    "babel-preset-stage-3": "6.24.1",
+    "babel-register": "6.26.0",
+    "cross-env": "5.2.0",
+    "nodemon": "1.18.3",
+    "rimraf": "2.6.2"
+  },
+  "babel": {
+    "presets": [
+      "env",
+      "stage-3"
+    ],
+    "plugins": [
+      "transform-runtime",
+      [
+        "transform-builtin-extend",
+        {
+          "globals": [
+            "Error",
+            "Array"
+          ]
+        }
+      ]
+    ],
+    "env": {
+      "test": {
+        "plugins": []
+      }
+    }
+  }
+}

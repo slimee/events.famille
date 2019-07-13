@@ -1,13 +1,14 @@
-import {object} from "mongo-registry"
 import jwt from "jsonwebtoken"
 import {X_ACCESS_TOKEN} from "./headers"
 import {run} from 'express-blueforest'
+import {objectNoEx} from "mongo-registry"
+import {check} from 'express-validator/check'
 
 const throwit = ex => {
     throw ex
 }
 
-export const validDrawer = run((o, req) => {
+export const validUser = run((o, req) => {
     let token = jwt.decode(req.headers[X_ACCESS_TOKEN])
 
     return !token || !token.user ?
@@ -18,3 +19,18 @@ export const validDrawer = run((o, req) => {
             :
             o
 })
+
+export const mongoId = field => {
+    return check(field).exists()
+        .withMessage("missing").isMongoId()
+        .withMessage("invalid mongo id").customSanitizer(objectNoEx)
+}
+
+
+export const setDate = field => o => {
+    o[field] = new Date()
+    return o
+}
+
+export const setCreatedAt = setDate("createdAt")
+export const setUpdatedAt = setDate("updatedAt")

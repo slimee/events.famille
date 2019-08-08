@@ -20,8 +20,9 @@
     "test-api-express-mongo": "^1.0.21"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.4",
-    "@babel/preset-env": "^7.5.4",
+    "@babel/node": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
     "@babel/register": "^7.4.4",
     "babel-plugin-transform-runtime": "6.23.0",
     "cross-env": "5.2.0",

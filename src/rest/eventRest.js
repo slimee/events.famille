@@ -7,8 +7,8 @@ const router = Router()
 
 router.post('/api/event',
     mongoId("_id"),
-    check("title").isString().isLength({min: 5, max: 100}).withMessage("5c. min, 100c. max"),
-    check("description").isString().isLength({min: 5, max: 1000}).withMessage("5c. min, 1000c. max"),
+    check("title").isString().isLength({min: 3, max: 100}).withMessage("3c. min, 100c. max"),
+    check("description").isString().isLength({min: 0, max: 1000}).withMessage("0c. min, 1000c. max").optional(),
     check("date").isISO8601().toDate().withMessage("ISO8601 date ex. 2019-07-13T12:11:32.570Z"),
     validUser,
     run(setCreatedAt),

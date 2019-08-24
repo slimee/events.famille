@@ -6,7 +6,6 @@ export const event1 = {
     title: "Barbecue",
     description: "bla bla bla",
     date: new Date(),
-    createdAt: new Date(),
     updatedAt: new Date()
 }
 
@@ -15,6 +14,5 @@ export const event2 = {
     title: "Barbecue 2",
     description: "bla bla bla 2",
     date: new Date(),
-    createdAt: new Date(),
     updatedAt: new Date()
 }

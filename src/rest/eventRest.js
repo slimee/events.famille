@@ -1,38 +1,46 @@
-import {Router, run} from "express-blueforest"
-import {check} from 'express-validator/check'
-import {deleteEvent, getEvent, saveEvent, searchEvents} from "../service/eventService"
-import {mongoId, setCreatedAt, setDate, setUpdatedAt, validUser} from "../validations"
+import { Router, run } from 'express-blueforest'
+import { check } from 'express-validator/check'
+import { deleteEvent, getEvent, saveEvent, searchEvents } from '../service/eventService'
+import { mongoId, setCreatedAt, setOid, setUpdatedAt, validOwner, validUser } from '../validations'
+import { col } from 'mongo-registry'
+import ENV from '../env'
 
 const router = Router()
+const events = col(ENV.DB_COLLECTION)
 
 router.post('/api/event',
-    mongoId("_id"),
-    check("title").isString().isLength({min: 3, max: 100}).withMessage("3c. min, 100c. max"),
-    check("description").isString().isLength({min: 0, max: 1000}).withMessage("0c. min, 1000c. max").optional(),
-    check("date").isISO8601().toDate().withMessage("ISO8601 date ex. 2019-07-13T12:11:32.570Z"),
-    validUser,
-    run(setCreatedAt),
-    run(saveEvent)
+  mongoId('_id'),
+  check('title').isString().isLength({ min: 3, max: 100 }).withMessage('3c. min, 100c. max'),
+  check('date').isISO8601().toDate().withMessage('ISO8601 date ex. 2019-07-13T12:11:32.570Z'),
+  validUser,
+  run(setCreatedAt),
+  run(setOid),
+  run(saveEvent),
 )
 
-router.put('/api/event/:_id',
-    mongoId("_id"),
-    check("title").isString().isLength({min: 5, max: 100}).withMessage("5c. min, 100c. max").optional(),
-    check("description").isString().isLength({min: 5, max: 1000}).withMessage("5c. min, 1000c. max").optional(),
-    check("date").isISO8601().toDate().withMessage("ISO8601 date ex. 2019-07-13T12:11:32.570Z").optional(),
-    validUser,
-    run(setUpdatedAt),
-    run(saveEvent)
+router.put('/api/event',
+  mongoId('_id'),
+  check('title').isString().isLength({ min: 3, max: 100 }).withMessage('5c. min, 100c. max').optional(),
+  check('date').isISO8601().toDate().withMessage('ISO8601 date ex. 2019-07-13T12:11:32.570Z').optional(),
+  validUser,
+  validOwner(events),
+  run(setUpdatedAt),
+  run(saveEvent),
 )
 
 router.get('/api/events', validUser, run(searchEvents))
 
 router.get('/api/event/:_id',
-    mongoId("_id"),
-    validUser,
-    run(getEvent)
+  mongoId('_id'),
+  validUser,
+  run(getEvent),
 )
 
-router.delete('/api/event/:_id', check("_id"), validUser, run(deleteEvent))
+router.delete('/api/event/:_id',
+  mongoId('_id'),
+  validUser,
+  validOwner(events),
+  run(deleteEvent),
+)
 
 module.exports = router

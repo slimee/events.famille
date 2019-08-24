@@ -10,6 +10,7 @@ const events = col(ENV.DB_COLLECTION)
 
 router.post('/api/event',
   mongoId('_id'),
+  mongoId('tid'),
   check('title').isString().isLength({ min: 3, max: 100 }).withMessage('3c. min, 100c. max'),
   check('date').isISO8601().toDate().withMessage('ISO8601 date ex. 2019-07-13T12:11:32.570Z'),
   validUser,
@@ -20,6 +21,7 @@ router.post('/api/event',
 
 router.put('/api/event',
   mongoId('_id'),
+  mongoId('tid').optional(),
   check('title').isString().isLength({ min: 3, max: 100 }).withMessage('5c. min, 100c. max').optional(),
   check('date').isISO8601().toDate().withMessage('ISO8601 date ex. 2019-07-13T12:11:32.570Z').optional(),
   validUser,
